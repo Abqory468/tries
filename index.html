@@ -832,6 +832,69 @@
                 font-size: 0.95rem;
             }
         }
+
+        /* ========== MUSIC TOGGLE BUTTON ========== */
+        .music-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e67e22;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+            background: #cf711f;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-icon {
+            font-size: 1.5rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .music-toggle.muted .music-icon {
+            content: "🔇";
+        }
+
+        /* Animasi untuk tombol saat musik diputar */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(230, 126, 34, 0.8);
+            }
+        }
+
+        .music-toggle:not(.muted) {
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        /* Responsive untuk mobile */
+        @media (max-width: 768px) {
+            .music-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .music-icon {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1009,6 +1072,17 @@
         <div class="modal-caption" id="modalCaption"></div>
     </div>
 </div>
+
+<!-- Tombol Musik -->
+<button id="musicToggle" class="music-toggle">
+    <span class="music-icon">🔊</span>
+</button>
+
+<!-- Audio Player -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="music/Yiruma, (이루마) - River Flows in You.mp3" type="audio/mpeg">
+    Musik tidak dapat diputar di browser Anda.
+</audio>
 
 <script>
     // ========== HAMBURGER MENU ==========
@@ -1339,6 +1413,69 @@
     });
 
     console.log("Website Sahabat Story siap!");
+
+    // ========== MUSIC PLAYER ==========
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    let isPlaying = false;
+    let musicStarted = false;
+
+    if (bgMusic) {
+        bgMusic.volume = 0.3;
+        
+        function playMusic() {
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicToggle.classList.remove('muted');
+                const icon = musicToggle.querySelector('.music-icon');
+                if (icon) icon.textContent = '🔊';
+            }).catch((error) => {
+                console.log("Autoplay dicegah:", error);
+                musicToggle.classList.add('muted');
+                const icon = musicToggle.querySelector('.music-icon');
+                if (icon) icon.textContent = '🔇';
+            });
+        }
+
+        function pauseMusic() {
+            bgMusic.pause();
+            isPlaying = false;
+            musicToggle.classList.add('muted');
+            const icon = musicToggle.querySelector('.music-icon');
+            if (icon) icon.textContent = '🔇';
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                pauseMusic();
+            } else {
+                playMusic();
+            }
+        }
+
+        musicToggle.addEventListener('click', toggleMusic);
+
+        function startMusicOnInteraction() {
+            if (!musicStarted) {
+                playMusic();
+                musicStarted = true;
+                document.removeEventListener('click', startMusicOnInteraction);
+                document.removeEventListener('touchstart', startMusicOnInteraction);
+                document.removeEventListener('keydown', startMusicOnInteraction);
+            }
+        }
+
+        document.addEventListener('click', startMusicOnInteraction);
+        document.addEventListener('touchstart', startMusicOnInteraction);
+        document.addEventListener('keydown', startMusicOnInteraction);
+
+        setTimeout(() => {
+            if (!musicStarted) {
+                playMusic().catch(() => {});
+            }
+        }, 1000);
+    }
 </script>
+
 </body>
 </html>
