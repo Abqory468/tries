@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Tries | Best Friends Forever</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Roboto', sans-serif;
+            background: linear-gradient(145deg, #fef9f0 0%, #fff5e6 100%);
+            color: #2d2a24;
+            scroll-behavior: smooth;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* ========== NAVIGASI ========== */
+        nav {
+            background: rgba(255, 245, 235, 0.96);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #ffddb0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c45c2c, #e67e22);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #5a3e2b;
+            transition: 0.2s;
+            font-size: 1.05rem;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #e67e22;
+            border-bottom-color: #e67e22;
+        }
+
+        /* ========== HAMBURGER MENU ========== */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 101;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: #e67e22;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active .hamburger span:nth-child(1) {
+            transform: translateY(10px) rotate(45deg);
+        }
+
+        .menu-toggle.active .hamburger span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active .hamburger span:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+
+        .nav-overlay.active {
+            display: block;
+        }
+
+        /* ========== RESPONSIVE NAVBAR - HP ONLY ========== */
+        @media (max-width: 576px) {
+            .nav-container {
+                padding: 0.8rem 1rem;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                max-width: 280px;
+                height: 100vh;
+                background: rgba(255, 245, 235, 0.98);
+                -webkit-backdrop-filter: blur(15px);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+                z-index: 100;
+                padding: 2rem;
+                margin: 0;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 0.8rem;
+                font-size: 1.2rem;
+                border-bottom: none;
+            }
+
+            .nav-links a:hover,
+            .nav-links a.active {
+                background: #ffefdd;
+                border-radius: 50px;
+                border-bottom: none;
+            }
+        }
+
+        /* ========== TABLET & DESKTOP - NO HAMBURGER ========== */
+        @media (min-width: 577px) {
+            .menu-toggle {
+                display: none !important;
+            }
+
+            .nav-links {
+                position: static !important;
+                display: flex !important;
+                flex-direction: row !important;
+                width: auto !important;
+                max-width: none !important;
+                height: auto !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                gap: 2rem !important;
+                right: auto !important;
+                transition: none !important;
+            }
+
+            .nav-links li {
+                width: auto !important;
+            }
+
+            .nav-links a {
+                display: inline-block !important;
+                padding: 0.5rem 0 !important;
+                font-size: 1.05rem !important;
+                border-bottom: 2px solid transparent !important;
+            }
+
+            .nav-links a:hover,
+            .nav-links a.active {
+                background: transparent !important;
+                border-bottom-color: #e67e22 !important;
+                border-radius: 0 !important;
+            }
+
+            .nav-overlay {
+                display: none !important;
+            }
+        }
+
+        /* Tablet specific gap adjustment */
+        @media (min-width: 577px) and (max-width: 768px) {
+            .nav-links {
+                gap: 1.2rem !important;
+            }
+            .nav-links a {
+                font-size: 0.95rem !important;
+            }
+        }
+
+        /* ========== CONTAINER UTAMA ========== */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.8rem;
+            overflow-x: hidden;
+        }
+
+        /* ========== HERO / WELCOME PAGE ========== */
+        .hero {
+            min-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 1rem;
+            background: radial-gradient(circle at 10% 30%, rgba(255, 225, 190, 0.3), transparent);
+            border-radius: 64px;
+            overflow-x: hidden;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            background: linear-gradient(125deg, #b95727, #f39c12);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            max-width: 700px;
+            color: #5a4a38;
+            margin-bottom: 2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: #e67e22;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.25s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 5px 12px rgba(230, 126, 34, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #e67e22;
+            color: #e67e22;
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            background: #cf711f;
+        }
+
+        /* ========== GALERI GRID ========== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.25s;
+            width: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 36px -12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            transition: 0.3s;
+            background: #f3e1c0;
+        }
+
+        .card-content {
+            padding: 1.2rem;
+        }
+
+        .card-content h3 {
+            font-size: 1.3rem;
+            color: #c45c2c;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-content p {
+            color: #6b5a48;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .card-img {
+                aspect-ratio: 16 / 9;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-img {
+                aspect-ratio: 1 / 1;
+            }
+        }
+
+        /* ========== PAGINATION ========== */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 3rem 0 2rem;
+            flex-wrap: wrap;
+        }
+
+        .pagination-btn {
+            background: white;
+            border: 2px solid #e67e22;
+            color: #e67e22;
+            padding: 0.6rem 1rem;
+            min-width: 45px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .pagination-btn:hover {
+            background: #e67e22;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .pagination-btn.active {
+            background: #e67e22;
+            color: white;
+            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .pagination-ellipsis {
+            color: #e67e22;
+            font-weight: bold;
+            padding: 0 0.3rem;
+            font-size: 1.2rem;
+        }
+
+        .page-info {
+            text-align: center;
+            margin-top: 1rem;
+            color: #7c5f44;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .pagination-container {
+                gap: 0.3rem;
+            }
+            .pagination-btn {
+                padding: 0.4rem 0.8rem;
+                min-width: 38px;
+                font-size: 0.8rem;
+            }
+            .page-info {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            max-width: 95%;
+            max-height: 90%;
+            border-radius: 28px;
+            background: #fef2e4;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-img {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 24px;
+        }
+
+        .modal-caption {
+            text-align: center;
+            margin-top: 12px;
+            font-weight: 500;
+            color: #2b2b2b;
+            background: #fff2e6;
+            padding: 8px 16px;
+            border-radius: 60px;
+            display: inline-block;
+            max-width: 90%;
+            word-wrap: break-word;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .modal-img {
+                max-height: 60vh;
+            }
+            .modal-caption {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-img {
+                max-height: 55vh;
+            }
+            .modal-caption {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* ========== SEJARAH & QUOTES ========== */
+        .story-section {
+            background: #fffaf2;
+            border-radius: 48px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+        }
+
+        .story-title {
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
+            border-left: 8px solid #e67e22;
+            padding-left: 1.2rem;
+            margin-bottom: 1.8rem;
+            font-weight: 700;
+        }
+
+        .story-text {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #2d2a24;
+        }
+
+        .quotes-block {
+            background: #ffefdd;
+            padding: 2rem;
+            border-radius: 40px;
+            margin-top: 2rem;
+        }
+
+        .quotes-block h3 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #b6511a;
+        }
+
+        .quote-item {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            padding: 0.8rem 1.5rem;
+            background: #fff6ea;
+            border-radius: 60px;
+            border-left: 5px solid #e67e22;
+            color: #4f3e2c;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #e9dbcd;
+            margin-top: 3rem;
+            color: #5d4635;
+            font-size: 0.9rem;
+        }
+
+        /* ========== PAGE TRANSITION ========== */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== WELCOME ELEMENTS ========== */
+        .welcome-highlight {
+            font-size: 1.2rem;
+            background: #fff0e0;
+            display: inline-block;
+            padding: 0.6rem 1.8rem;
+            border-radius: 60px;
+            margin-top: 1rem;
+        }
+
+        .welcome-description {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            background: #fff0e0;
+            display: inline-block;
+            padding: 0.6rem 1.8rem;
+            border-radius: 60px;
+        }
+
+        /* ========== ABOUT PAGE ========== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .about-card {
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .about-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .about-img-wrapper {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffd89b, #c7e9fb);
+        }
+
+        .about-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .about-card:hover .about-img {
+            transform: scale(1.05);
+        }
+
+        .about-info {
+            padding: 1.5rem;
+            background: #fffaf5;
+        }
+
+        .about-info h3 {
+            font-size: 1.8rem;
+            color: #c45c2c;
+            margin-bottom: 0.25rem;
+        }
+
+        .about-role {
+            font-size: 0.9rem;
+            color: #e67e22;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .about-details {
+            border-top: 2px dashed #ffddb0;
+            padding-top: 1rem;
+        }
+
+        .about-details p {
+            margin: 0.6rem 0;
+            font-size: 0.9rem;
+            color: #5a4a38;
+            line-height: 1.4;
+        }
+
+        .about-details strong {
+            color: #b45f2b;
+            font-weight: 600;
+        }
+
+        /* ========== SOCIAL MEDIA SECTION ========== */
+        .about-social {
+            margin: 2rem 0 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .about-social-wrapper {
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .about-social-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .about-social-img {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffd89b, #c7e9fb);
+        }
+
+        .about-social-img-style {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .about-social-wrapper:hover .about-social-img-style {
+            transform: scale(1.05);
+        }
+
+        .about-social-info {
+            padding: 1.5rem;
+            background: #fffaf5;
+        }
+
+        .about-social-info h3 {
+            font-size: 1.8rem;
+            color: #c45c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-social-role {
+            font-size: 0.9rem;
+            color: #e67e22;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .about-social-username {
+            font-size: 1.1rem;
+            color: #5a4a38;
+            margin-top: 0.5rem;
+        }
+
+        .about-social-username strong {
+            color: #b45f2b;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .about-social-wrapper {
+                max-width: 100%;
+            }
+
+            .about-social-img {
+                height: 180px;
+            }
+
+            .about-social-info h3 {
+                font-size: 1.5rem;
+            }
+
+            .about-social-username strong {
+                font-size: 1rem;
+            }
+        }
+
+        .about-footer {
+            text-align: center;
+            margin: 2.5rem 0 1rem;
+            padding: 1.5rem;
+            background: #ffefdd;
+            border-radius: 60px;
+            font-style: italic;
+            color: #5a3e2b;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            .about-img-wrapper {
+                height: 240px;
+            }
+            .about-info h3 {
+                font-size: 1.5rem;
+            }
+            .container {
+                padding: 0 1.2rem;
+            }
+            .btn-group {
+                gap: 0.8rem;
+            }
+            .story-section {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .quote-item {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">✨ Tries</div>
+        
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+        
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#" data-page="welcome" class="nav-link active">Beranda</a></li>
+            <li><a href="#" data-page="gallery" class="nav-link">Galeri Foto</a></li>
+            <li><a href="#" data-page="story" class="nav-link">Cerita & Quotes</a></li>
+            <li><a href="#" data-page="about" class="nav-link">Tentang Kami</a></li>
+        </ul>
+    </div>
+    
+    <div class="nav-overlay" id="navOverlay"></div>
+</nav>
+
+<main class="container">
+    <!-- Halaman Welcome -->
+    <div id="welcome-page" class="page active-page">
+        <div class="hero">
+            <h1>Haii, Sahabatku! 🤝</h1>
+            <p>Selamat datang di ruang kenangan kita. Tempat di mana setiap foto, cerita, dan tawa abadi menjadi saksi persahabatan yang tak lekang waktu.</p>
+            <div class="btn-group">
+                <button class="btn" id="exploreGalleryBtn">Lihat Galeri Foto</button>
+                <button class="btn btn-outline" id="readStoryBtn">Baca Cerita Kami</button>
+            </div>
+            <div class="welcome-highlight">
+                💖 "Seorang sahabat adalah satu jiwa yang mendiami dua tubuh." — Aristoteles
+            </div>
+            <div class="welcome-description">
+                I present this to my Best Friends at DQM, Hadid and Hafizh
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Galeri Foto -->
+    <div id="gallery-page" class="page">
+        <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">📸 Momen Kebersamaan</h2>
+        <p style="margin-bottom: 1.5rem; color: #7c5f44;">Klik foto untuk melihat lebih dekat — setiap gambar punya cerita tersendiri.</p>
+        <div id="gallery-container" class="gallery-grid"></div>
+        <div id="pagination-container" class="pagination-container"></div>
+        <div id="page-info" class="page-info"></div>
+    </div>
+
+    <!-- Halaman Cerita Sejarah + Quotes -->
+    <div id="story-page" class="page">
+        <div class="story-section">
+            <div class="story-title">📖 Perjalanan Persahabatan Kami</div>
+            <div class="story-text">
+                <p>Semuanya berawal dari sebuah pesantren di daerah Bogor. Di sanalah dua insan yang awalnya asing mulai saling mengenal di dalam asrama. Dari yang awalnya hanya berani melontarkan sepatah dua kata karena malu, perlahan menjadi ribuan kata yang terucap setiap harinya. Suka dan duka mereka lalui bersama, tanpa terasa waktu pun berlalu begitu cepat.</p>
+                <br>
+                <p>Namun, tak selamanya mudah. Salah satu dari mereka mulai menjauh, sementara yang satunya lagi berusaha mati-matian mempertahankan hubungan yang mulai rapuh itu. Hingga ketika keduanya hampir menjadi asing kembali, hadirlah satu orang baru—yang secara ajaib mampu menyatukan mereka lagi. Sejak saat itu, dua menjadi tiga. Tiga insan yang selalu bersama, saling melengkapi. Dan orang ketiga inilah yang kemudian membawa lebih banyak teman ke dalam lingkaran kecil kami.</p>
+                <br>
+                <p>Kami menghabiskan waktu dengan hal-hal sederhana yang terasa begitu bermakna. Bermain suit Taro, ABC Lima Dasar, mejikuhibiniu, TOD, dan masih banyak lagi sambil menunggu waktu azan tiba di masjid. Sesekali kami bertemu di sekolah, saling mengunjungi kamar masing-masing, menjaga satu sama lain saat sakit, dan hadir di saat-saat yang membutuhkan.</p>
+                <br>
+                <p>Keadaan seakan sengaja memaksa kami untuk terus bersama. Saling bahu-membahu saat kesulitan datang, saling menguatkan saat luka menghampiri, dan saling mengingatkan saat salah satu mulai menyimpang dari jalan.</p>
+                <br>
+                <p>Waktu berlalu tanpa pernah meminta izin. Suka maupun duka, semua kami hadapi bergandengan tangan. Hingga akhirnya, kami dipisahkan oleh pendidikan masing-masing. Memang menyedihkan, sungguh. Tapi di tengah perpisahan itu, kami berjanji pada satu hal: tidak akan pernah melupakan satu sama lain.</p>
+                <p style="margin-top: 0.8rem;"><strong>Karena persahabatan sejati bukan tentang seberapa lama kita bersama, tapi tentang seberapa kuat kita tetap bersatu meski terpisah jarak.</strong></p>
+            </div>
+            
+            <div class="quotes-block">
+                <h3>💬 Quotes Spesial tentang Sahabat</h3>
+                <div class="quote-item">“Sahabat adalah orang yang tahu semua tentang dirimu, namun tetap menyukaimu.” — Elbert Hubbard</div>
+                <div class="quote-item">“Persahabatan lahir saat satu orang berkata kepada yang lain: ‘Apa? Kamu juga? Aku pikir aku sendiri saja.’” — C.S. Lewis</div>
+                <div class="quote-item">“Bersama sahabat, hidup terasa lebih indah, kesedihan berbagi menjadi ringan, dan kebahagiaan berlipat ganda.” — (Kutipan Tim Sahabat)</div>
+                <div class="quote-item">“Tak ada kata terlambat untuk menciptakan kenangan baru. Terima kasih telah menjadi bagian dari ceritaku.” — Dari kami untukmu</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Tentang Kami -->
+    <div id="about-page" class="page">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="font-size: 2rem; color: #c45c2c;">👥 Tentang Kami</h2>
+            <p style="color: #7c5f44; max-width: 600px; margin: 0.5rem auto;">Tiga sahabat yang terikat oleh tawa, mimpi, dan perjalanan tak terlupakan</p>
+        </div>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <div class="about-img-wrapper">
+                    <img class="about-img" src="img/profil/q.jpeg" alt="Abqory Firdaus Hisan">
+                </div>
+                <div class="about-info">
+                    <h3>Abqory Firdaus Hisan</h3>
+                    <p class="about-role">✨ Pendiam, Soft-Spoken, Baik-Hati</p>
+                    <div class="about-details">
+                        <p><strong>📅 TTL:</strong> 15 Maret 2010</p>
+                        <p><strong>📍 Alamat:</strong> Jl. Kenangan No. 45, Jakarta Selatan</p>
+                        <p><strong>🎓 SMA:</strong> SMK IDN Boarding School</p>
+                        <p><strong>❤️ Hobi:</strong> Menyendiri, Scrolling, Tidur</p>
+                        <p><strong>📌 IG:</strong> @abqoryfh_4</p>
+                        <p><strong>💬 Quote:</strong> "Semoga kita bisa terus bersama! Terus berkabar loh ya.."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <div class="about-img-wrapper">
+                    <img class="about-img" src="img/profil/had.jpeg" alt="Muhamad Zafa Al-Hadid">
+                </div>
+                <div class="about-info">
+                    <h3>Muhamad Zafa Al-Hadid</h3>
+                    <p class="about-role">🌙 Kalem, Rajin, Tenang</p>
+                    <div class="about-details">
+                        <p><strong>📅 TTL:</strong> 20 Juli 2010</p>
+                        <p><strong>📍 Alamat:</strong> Jl. Cihampelas No. 78, Bandung</p>
+                        <p><strong>🎓 SMA:</strong> SMAIT Darul Qur'an Mulia</p>
+                        <p><strong>❤️ Hobi:</strong> Bermain gitar, menulis lagu, sepak bola</p>
+                        <p><strong>📌 IG:</strong> @hadid_zafa20710</p>
+                        <p><strong>💬 Quote:</strong> "Musik adalah bahasa jiwa, sahabat adalah nadanya."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <div class="about-img-wrapper">
+                    <img class="about-img" src="img/profil/hf.jpeg" alt="Muhammad Hafizh">
+                </div>
+                <div class="about-info">
+                    <h3>Muhammad Hafizh</h3>
+                    <p class="about-role">⚡️ Periang, Aktif, Introvert?</p>
+                    <div class="about-details">
+                        <p><strong>📅 TTL:</strong> 17 Februari 2010</p>
+                        <p><strong>📍 Alamat:</strong> Jl. Raya Darmo No. 23, Surabaya</p>
+                        <p><strong>🎓 SMA:</strong> SMAIT Buahati</p>
+                        <p><strong>❤️ Hobi:</strong> Membaca novel, menulis cerpen, traveling</p>
+                        <p><strong>📌 IG:</strong> @muhamuhfizh</p>
+                        <p><strong>💬 Quote:</strong> "Cerita terbaik adalah yang kita tulis bersama sahabat."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media Section -->
+        <div class="about-social">
+            <div class="about-social-wrapper">
+                <div class="about-social-img">
+                    <img src="img/profil/sm.png" class="about-social-img-style" alt="Our Social Media">
+                </div>
+                <div class="about-social-info">
+                    <h3>Our Social Media</h3>
+                    <p class="about-social-role">This is a place for we put our story</p>
+                    <p class="about-social-username"><strong>@three.esss</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-footer">
+            <p>💫 "Sahabat sejati adalah mereka yang datang saat dunia menjauh. Terima kasih telah menjadi keluarga kedua." 💫</p>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>💛 Untuk sahabat terbaik — kenangan abadi dalam satu frame.</p>
+    <p style="margin-top: 0.5rem;">&copy; 2026 Tries | Selalu Ada di Hati</p>
+</footer>
+
+<!-- Modal Preview Foto -->
+<div id="imageModal" class="modal">
+    <div class="modal-content">
+        <img class="modal-img" id="modalImg" src="" alt="preview">
+        <div class="modal-caption" id="modalCaption"></div>
+    </div>
+</div>
+
+<script>
+    // ========== HAMBURGER MENU ==========
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navLinks');
+    const navOverlay = document.getElementById('navOverlay');
+    const allNavLinks = document.querySelectorAll('.nav-link');
+
+    function closeMenu() {
+        if (menuToggle) menuToggle.classList.remove('active');
+        if (navMenu) navMenu.classList.remove('active');
+        if (navOverlay) navOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function openMenu() {
+        if (menuToggle) menuToggle.classList.add('active');
+        if (navMenu) navMenu.classList.add('active');
+        if (navOverlay) navOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (navMenu && navMenu.classList.contains('active')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+    }
+
+    if (navOverlay) {
+        navOverlay.addEventListener('click', closeMenu);
+    }
+
+    if (allNavLinks.length > 0) {
+        allNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 576) {
+                    closeMenu();
+                }
+            });
+        });
+    }
+
+    // ========== DATA FOTO ==========
+    const photosData = [
+        { src: "img/img1/1.jpeg", title: "Reuni pertama di rumah Qory", desc: "Beberapa pekan setelah kita lulus atau resmi bukan lagi santri SMPIT DQM, kita memutuskan untuk mengadakan Reuni pertama kita di rumah Qory pada tanggal 16-17 Juni 2025 ❤️" },
+        { src: "img/img1/2.jpeg", title: "Maen di Timezone 😂", desc: "Kita ke Mall Plaza Pondok Gede buat maen di Timezone wkwkwk, gapapa lah yaa..." },
+        { src: "img/img1/3.jpeg", title: "Makan bersama", desc: "Sebelum pulang kita makan dulu di Solaria!" },
+        { src: "img/img1/4.jpeg", title: "Shopping bareng!", desc: "Kita juga sempet mampir belanja dulu, buat beli ciki sama mie. Buat makan bareng pas malemnya hihi.." },
+        { src: "img/img1/5.jpeg", title: "Menuju Mall Plaza", desc: "Kalo ini pas kita OTW ke Mall Plaza Pondok Gede, awal-awal jadinya pesen Grab😂 (walaupun pulangnya jalan kaki siii)" },
+        { src: "img/img1/6.jpeg", title: "OTW rumah Qory", desc: "Kalo ini berdua lagi mau OTW ke tempat Reunian pertama nih hihi" },
+       
+        { src: "img/img2/1.jpeg", title: "Reuni kedua di Rumah Qory", desc: "Setelah 1 semester kita bersekolah di sekolah masing-masing, akhirnya libur pun tiba. Setelah 1 semester tidak bertemu, kami pun merencanakan acara Reuni kedua yang Alhamdulillah berhasil dilaksanakan di Rumah Qory pada tanggal 23-24 Desember 2025" },
+        { src: "img/img2/6.jpeg", title: "OTW ke Stasiun", desc: "Setelah semua sudah hadir & lengkap, kami bersiap-siap untuk pergi ke Mall. Ba'da Dzhuhur kami pun berangkat.." },
+        { src: "img/img2/5.jpeg", title: "Di kereta", desc: "Lagi nunggu di dalem keretaaa" },
+        { src: "img/img2/7.jpeg", title: "Di Stasiun LRT", desc: "Sambil nunggu keretanya dateng boleh kalii selfie duluuu hihi 🤭" },
+        { src: "img/img2/2.jpeg", title: "Watch Movie Together!", desc: "Nonton Agak Laen 2 di XXI Revo Mall bareng-bareng. wkkwk seru banget woi! 😆 " }, 
+        { src: "img/img2/3.jpeg", title: "Selfie", desc: "Selfie Qory dan Hadid. Hafizh lagi ngecas dulu wkwk 😙" },
+        { src: "img/img2/4.jpeg", title: "Makan Bareng", desc: "Abis nonton kita laper, dan akhirnya makan di CFC. enak lah yaa 😋" },
+        { src: "img/img2/9.jpeg", title: "Foto bareng di toilet", desc: "Gatau juga ini kok bisa foto bareng di toilet umum yaa wkwk 🤣 Ceritanya ke toilet dulu sebelum pesen grab balik ke rumah dari stasiun" },
+        { src: "img/img2/10.jpeg", title: "Tahajud Momen", desc: "Baru bangun.. masih ngantuk.. langsung tahajud.. eh, tapi ada yang aneh di gambarnyaa.. apa ya?" },
+        { src: "img/img2/8.jpeg", title: "a Picture before go home", desc: "Seperti biasa sebelum pulang ke rumah masing-masing atau perpisahan, kita fotbar dulu nich" },
+        { src: "img/img2/11.jpeg", title: "Kenangan✨", desc: "Foto yang ga sengaja diambil tapi ko hasilnya bagus banget yak? keren nih fotografer kite yee.." },
+        
+        { src: "img/img3/1.jpeg", title: "Lagi di bis", desc: "Bersama Hafizh, menuju ke tempatreunian ke-3" },
+        { src: "img/img3/2.jpeg", title: "Selfie TEROOSS", desc: "Lagi di lift menuju ke lantai tertinggi. Wooaaa" },
+        { src: "img/img3/3.jpeg", title: "Nyasar? Hadid NGAMUK?!", desc: "Eh.. LAH?! Kok nyasar ke Perpustakaan gede?! 😂" },
+        { src: "img/img3/4.jpeg", title: "Reuni ke-3", desc: "Kali ini reuni ke-3 diadakan di Rumah Hadid.. yeyy. Sekarang bukan cuman reuni ni, tapi juga Bukber! + I'tikaf bareng.. seru uuy" },
+        { src: "img/img3/5.jpeg", title: "Mati Lampu 🤫", desc: "Mumpung mati lampu, foto dulu gasiii? eh tapi kok bagus ya hasilnya 😭 Hadid malah ga kliatan lagi mukanya 🥲" },
+        { src: "img/img3/6.jpeg", title: "Kedatangan Tamu", desc: "Ga nyangka bisa ketemu sama Dayat guys! Makin rame nii 😆" },
+        { src: "img/img3/7.jpeg", title: "Fotbar pake Ipad", desc: "Bagus ya hasilnyaa...." },
+        { src: "img/img3/8.jpeg", title: "Sahabat Selamanya", desc: "Senyum tulus yang selalu menguatkan di segala keadaan." },
+        { src: "https://macantua.wordpress.com/wp-content/uploads/2013/07/tanda-tanya.jpg", title: "Coming Soon", desc: "Terus semangat kawanku!" },
+        
+    ];
+
+    // ========== PAGINATION ==========
+    let currentPage = 1;
+    const itemsPerPage = 12;
+
+    function getVisiblePages(currentPage, totalPages) {
+        const visiblePages = [];
+        const maxVisible = 3;
+
+        if (totalPages <= maxVisible + 2) {
+            for (let i = 1; i <= totalPages; i++) {
+                visiblePages.push(i);
+            }
+        } else {
+            if (currentPage <= 3) {
+                for (let i = 1; i <= maxVisible; i++) {
+                    visiblePages.push(i);
+                }
+                visiblePages.push('...');
+                visiblePages.push(totalPages);
+            } else if (currentPage >= totalPages - 2) {
+                visiblePages.push(1);
+                visiblePages.push('...');
+                for (let i = totalPages - (maxVisible - 1); i <= totalPages; i++) {
+                    visiblePages.push(i);
+                }
+            } else {
+                visiblePages.push(1);
+                visiblePages.push('...');
+                for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                    visiblePages.push(i);
+                }
+                visiblePages.push('...');
+                visiblePages.push(totalPages);
+            }
+        }
+        return visiblePages;
+    }
+
+    function renderPagination(totalItems) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const paginationContainer = document.getElementById('pagination-container');
+        const pageInfo = document.getElementById('page-info');
+
+        if (!paginationContainer) return;
+
+        if (totalPages <= 1) {
+            paginationContainer.style.display = 'none';
+            if (pageInfo) pageInfo.style.display = 'none';
+            return;
+        }
+
+        paginationContainer.style.display = 'flex';
+        if (pageInfo) {
+            pageInfo.style.display = 'block';
+            const startItem = (currentPage - 1) * itemsPerPage + 1;
+            const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+            pageInfo.innerHTML = `Menampilkan ${startItem} - ${endItem} dari ${totalItems} foto`;
+        }
+
+        paginationContainer.innerHTML = '';
+
+        const prevBtn = document.createElement('button');
+        prevBtn.innerHTML = '←';
+        prevBtn.classList.add('pagination-btn');
+        if (currentPage === 1) prevBtn.disabled = true;
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderGallery();
+                renderPagination(photosData.length);
+                document.getElementById('gallery-page').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+        paginationContainer.appendChild(prevBtn);
+
+        const visiblePages = getVisiblePages(currentPage, totalPages);
+        visiblePages.forEach(page => {
+            if (page === '...') {
+                const ellipsis = document.createElement('span');
+                ellipsis.innerHTML = '...';
+                ellipsis.classList.add('pagination-ellipsis');
+                paginationContainer.appendChild(ellipsis);
+            } else {
+                const pageBtn = document.createElement('button');
+                pageBtn.innerHTML = page;
+                pageBtn.classList.add('pagination-btn');
+                if (page === currentPage) pageBtn.classList.add('active');
+                pageBtn.addEventListener('click', () => {
+                    currentPage = page;
+                    renderGallery();
+                    renderPagination(photosData.length);
+                    document.getElementById('gallery-page').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+                paginationContainer.appendChild(pageBtn);
+            }
+        });
+
+        const nextBtn = document.createElement('button');
+        nextBtn.innerHTML = '→';
+        nextBtn.classList.add('pagination-btn');
+        if (currentPage === totalPages) nextBtn.disabled = true;
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderGallery();
+                renderPagination(photosData.length);
+                document.getElementById('gallery-page').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+        paginationContainer.appendChild(nextBtn);
+    }
+
+    // ========== MODAL ==========
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalCaption = document.getElementById('modalCaption');
+
+    function openModal(imgSrc, captionText) {
+        if (modal) {
+            modal.style.display = 'flex';
+            modalImg.src = imgSrc;
+            modalCaption.innerText = captionText;
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeModal() {
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.classList.contains('modal')) {
+                closeModal();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
+            closeModal();
+        }
+    });
+
+    // ========== RENDER GALLERY ==========
+    function renderGallery() {
+        const galleryContainer = document.getElementById('gallery-container');
+        if (!galleryContainer) return;
+        galleryContainer.innerHTML = '';
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentPhotos = photosData.slice(startIndex, endIndex);
+
+        currentPhotos.forEach((photo) => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.innerHTML = `
+                <img class="card-img" src="${photo.src}" alt="${photo.title}" loading="lazy">
+                <div class="card-content">
+                    <h3>📷 ${photo.title}</h3>
+                    <p>${photo.desc.substring(0, 65)}${photo.desc.length > 65 ? '...' : ''}</p>
+                </div>
+            `;
+            card.addEventListener('click', () => {
+                openModal(photo.src, `${photo.title} — ${photo.desc}`);
+            });
+            galleryContainer.appendChild(card);
+        });
+
+        if (currentPhotos.length === 0) {
+            galleryContainer.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Belum ada foto untuk ditampilkan.</p>';
+        }
+    }
+
+    // ========== ROUTING ==========
+    const pages = {
+        welcome: document.getElementById('welcome-page'),
+        gallery: document.getElementById('gallery-page'),
+        story: document.getElementById('story-page'),
+        about: document.getElementById('about-page')
+    };
+
+    const navLinkItems = document.querySelectorAll('.nav-link');
+
+    function showPage(pageId) {
+        Object.values(pages).forEach(page => {
+            if (page) page.classList.remove('active-page');
+        });
+        if (pages[pageId]) {
+            pages[pageId].classList.add('active-page');
+        }
+        navLinkItems.forEach(link => {
+            const linkPage = link.getAttribute('data-page');
+            if (linkPage === pageId) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    navLinkItems.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const pageId = link.getAttribute('data-page');
+            if (pageId && pages[pageId]) {
+                showPage(pageId);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    });
+
+    const exploreBtn = document.getElementById('exploreGalleryBtn');
+    const readStoryBtn = document.getElementById('readStoryBtn');
+    
+    if (exploreBtn) {
+        exploreBtn.addEventListener('click', () => {
+            showPage('gallery');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+    if (readStoryBtn) {
+        readStoryBtn.addEventListener('click', () => {
+            showPage('story');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // ========== INITIAL PAGE ==========
+    showPage('welcome');
+
+    // ========== INITIALISASI GALLERY ==========
+    renderGallery();
+    renderPagination(photosData.length);
+
+    // Fallback untuk gambar error
+    document.addEventListener('DOMContentLoaded', () => {
+        const imgs = document.querySelectorAll('.card-img');
+        imgs.forEach(img => {
+            img.addEventListener('error', () => {
+                img.src = 'https://picsum.photos/id/100/500/400';
+            });
+        });
+    });
+
+    console.log("Website Sahabat Story siap!");
+</script>
+</body>
+</html>
