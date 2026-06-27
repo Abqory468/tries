@@ -1090,6 +1090,205 @@
             .option-btn { padding: 0.9rem 1.1rem; font-size: 0.95rem; }
             .result-score { font-size: 2.2rem; }
         }
+        /* ========== ESCAPE FROM PESANTREN UI ========== */
+        .ep-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .ep-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .ep-header h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .ep-illustration {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            background: rgba(95, 113, 97, 0.05);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .ep-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ep-scene-badge {
+            background: rgba(95, 113, 97, 0.1);
+            color: var(--text);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .ep-fp-badge {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .ep-story-text {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 2.5rem;
+            min-height: 5rem;
+        }
+
+        .ep-options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .ep-option-btn {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-weight: 500;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ep-option-btn::before {
+            content: '>';
+            color: var(--secondary);
+            font-weight: bold;
+            margin-right: 10px;
+            opacity: 0;
+            transform: translateX(-5px);
+            transition: all 0.2s ease;
+        }
+
+        .ep-option-btn:hover {
+            border-color: var(--primary);
+            background: rgba(95, 113, 97, 0.04);
+            transform: translateX(4px);
+        }
+        
+        .ep-option-btn:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .ep-scene-fade {
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .ep-scene-fade-out {
+            animation: fadeOut 0.3s ease forwards;
+        }
+
+        .ep-collection-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .ep-ending-item {
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            background: rgba(95, 113, 97, 0.02);
+        }
+        
+        .ep-ending-item.unlocked {
+            background: #fff;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .ep-ending-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            opacity: 0.3;
+        }
+        
+        .ep-ending-item.unlocked .ep-ending-icon {
+            opacity: 1;
+        }
+        
+        .ep-ending-info h4 {
+            margin: 0 0 0.2rem;
+            color: var(--text);
+            opacity: 0.5;
+        }
+        
+        .ep-ending-item.unlocked .ep-ending-info h4 {
+            opacity: 1;
+            color: var(--primary);
+        }
+        
+        .ep-ending-info p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--muted);
+            opacity: 0.5;
+        }
+        
+        .ep-ending-item.unlocked .ep-ending-info p {
+            opacity: 1;
+        }
+        
+        .ep-ending-badge {
+            display: inline-block;
+            background: #e9c46a;
+            color: #264653;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+
+        @media (max-width: 576px) {
+            .ep-container { padding: 1.5rem; }
+            .ep-header h2 { font-size: 1.5rem; }
+            .ep-story-text { font-size: 1rem; }
+            .ep-option-btn { font-size: 0.95rem; padding: 0.8rem 1rem; }
+        }
     </style>
 </head>
 <body>
@@ -1269,6 +1468,11 @@
                 <h3>Tebak Kenangan</h3>
                 <p>10 Pertanyaan seputar kenangan persahabatan kita. Seberapa ingat kamu?</p>
             </div>
+            <div class="game-card" onclick="startEscapePesantren()">
+                <div class="game-card-icon"><i data-lucide="door-open" style="width: 2.5rem; height: 2.5rem;"></i></div>
+                <h3>Escape From Pesantren</h3>
+                <p>Interactive story persahabatan kita. Temukan 8 ending rahasianya!</p>
+            </div>
         </div>
     </div>
 
@@ -1303,6 +1507,119 @@
                     <button class="btn" onclick="startTebakKenangan()">Main Lagi</button>
                     <button class="btn btn-outline" onclick="showPage('games')">Kembali ke Games</button>
                 </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Escape From Pesantren -->
+    <div id="escape-pesantren-page" class="page">
+        <!-- Start Screen -->
+        <div id="ep-start-screen" class="ep-container">
+            <div class="ep-header">
+                <h2>Escape From Pesantren</h2>
+                <p style="font-style: italic;">"Setiap malam selalu ada cerita. Kadang lucu, kadang menegangkan. Pilihanmu akan menentukan bagaimana kisah malam ini berakhir."</p>
+            </div>
+            <div class="ep-illustration">
+                <i data-lucide="moon-star" style="width: 5rem; height: 5rem; color: var(--primary);"></i>
+            </div>
+            <div class="btn-group" style="justify-content: center; margin-top: 2rem;">
+                <button class="btn" onclick="showEpCharScreen()">Mulai Bermain</button>
+                <button class="btn btn-outline" onclick="showEpCollection()">Koleksi Ending</button>
+                <button class="btn btn-outline" onclick="showPage('games')">Kembali</button>
+            </div>
+        </div>
+
+        <!-- Character Selection Screen -->
+        <div id="ep-char-screen" class="ep-container" style="display: none; text-align: center;">
+            <div class="ep-header">
+                <h2>Pilih Karaktermu</h2>
+                <p>Siapa yang ingin kamu mainkan malam ini?</p>
+            </div>
+            <div class="ep-options-container" style="margin-top: 2rem; max-width: 300px; margin-left: auto; margin-right: auto;">
+                <button class="ep-option-btn" onclick="selectEpCharacter('Qory')" style="justify-content: center; font-size: 1.1rem; text-align: center;">
+                    <i data-lucide="user" style="margin-right: 10px;"></i> Qory
+                </button>
+                <button class="ep-option-btn" onclick="selectEpCharacter('Hadid')" style="justify-content: center; font-size: 1.1rem; text-align: center;">
+                    <i data-lucide="user" style="margin-right: 10px;"></i> Hadid
+                </button>
+                <button class="ep-option-btn" onclick="selectEpCharacter('Hafizh')" style="justify-content: center; font-size: 1.1rem; text-align: center;">
+                    <i data-lucide="user" style="margin-right: 10px;"></i> Hafizh
+                </button>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-outline" onclick="document.getElementById('ep-char-screen').style.display='none'; document.getElementById('ep-start-screen').style.display='block';">Kembali</button>
+            </div>
+        </div>
+
+        <!-- Gameplay Screen -->
+        <div id="ep-game-screen" class="ep-container" style="display: none;">
+            <div class="ep-top-bar">
+                <span id="ep-scene-title" class="ep-scene-badge">Asrama - 22:30</span>
+                <span class="ep-fp-badge"><i data-lucide="heart" style="width: 1rem; height: 1rem; margin-right: 0.3rem;"></i> FP: <span id="ep-fp-score">0</span></span>
+            </div>
+            
+            <div id="ep-scene-content" class="ep-scene-fade">
+                <div class="ep-story-text" id="ep-story-text">
+                    Jam menunjukkan pukul 22.30. Qory sedang berbaring di kamar.
+                </div>
+                <div class="ep-options-container" id="ep-options">
+                    <!-- Opsi akan di-render di sini -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Random Event Screen -->
+        <div id="ep-event-screen" class="ep-container" style="display: none; background: rgba(95, 113, 97, 0.05); border: 2px dashed var(--secondary);">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <i data-lucide="alert-triangle" style="width: 3rem; height: 3rem; color: #d4a373;"></i>
+                <h3 style="color: var(--primary); margin-top: 0.5rem;">Random Event!</h3>
+            </div>
+            <div class="ep-story-text" id="ep-event-text">
+                Tiba-tiba ada kejadian tak terduga!
+            </div>
+            <div class="ep-options-container" id="ep-event-options">
+                <!-- Opsi event di sini -->
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="ep-result-screen" class="ep-container" style="display: none; text-align: center;">
+            <div class="ep-ending-badge" id="ep-ending-status">ENDING BARU!</div>
+            <h2 id="ep-ending-title" style="color: var(--primary); margin: 1rem 0 0.5rem; font-size: 1.8rem;">Brotherhood Never Dies</h2>
+            
+            <div style="margin: 1rem 0;">
+                <span id="ep-ending-stars" style="color: #ffd166; font-size: 1.5rem; letter-spacing: 2px;">⭐⭐⭐⭐⭐</span>
+            </div>
+            
+            <div class="ep-fp-badge" style="display: inline-block; margin-bottom: 1.5rem;">
+                Friendship Point: <span id="ep-ending-fp">95</span>/100
+            </div>
+            
+            <p id="ep-ending-desc" style="color: var(--text); font-style: italic; margin-bottom: 2rem;">
+                "Persahabatan sejati bukan tentang siapa yang paling berani, tetapi siapa yang tetap bersama sampai akhir."
+            </p>
+            
+            <div class="btn-group" style="justify-content: center;">
+                <button class="btn" onclick="startEpGameplay()">Main Lagi</button>
+                <button class="btn btn-outline" onclick="showEpCollection()">Lihat Koleksi</button>
+                <button class="btn btn-outline" onclick="showPage('games')">Keluar</button>
+            </div>
+        </div>
+
+        <!-- Collection Screen -->
+        <div id="ep-collection-screen" class="ep-container" style="display: none;">
+            <div class="ep-header" style="margin-bottom: 1.5rem;">
+                <h2><i data-lucide="book-heart"></i> Koleksi Ending</h2>
+                <p id="ep-collection-progress" style="color: var(--muted); font-size: 0.95rem;">0/8 Ending Ditemukan</p>
+            </div>
+            
+            <div class="ep-collection-list" id="ep-collection-list">
+                <!-- List ending di-render di sini -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-outline" onclick="document.getElementById('ep-collection-screen').style.display='none'; document.getElementById('ep-start-screen').style.display='block';">Kembali</button>
             </div>
         </div>
     </div>
@@ -1605,7 +1922,8 @@
         story: document.getElementById('story-page'),
         about: document.getElementById('about-page'),
         games: document.getElementById('games-page'),
-        'tebak-kenangan': document.getElementById('tebak-kenangan-page')
+        'tebak-kenangan': document.getElementById('tebak-kenangan-page'),
+        'escape-pesantren': document.getElementById('escape-pesantren-page')
     };
 
     const navLinkItems = document.querySelectorAll('.nav-link');
@@ -1695,7 +2013,7 @@
         },
         {
             question: "Kalo jumlah semua Adek Hadid, Adek Hafizh, dan Kakak Qory di Jumlahin berapa totalnya?",
-            options: ["kayaknya 11", "Mungkin 10", "9 Gak sih", "8 Woy"],
+            options: ["kayaknya 10", "Mungkin 7", "8 Gak sih", "6 Woy"],
             answer: 2
         },
         {
@@ -1846,6 +2164,437 @@
         
         document.getElementById('result-emoji').innerText = emoji;
         document.getElementById('result-message').innerText = message;
+    }
+
+    // ========== GAME: ESCAPE FROM PESANTREN ==========
+    
+    // Konfigurasi Ending
+    // Konfigurasi Ending
+    const epEndings = {
+        'end_tidur': {
+            id: 'end_tidur',
+            title: 'Tidur adalah Jalan Ninja',
+            stars: '⭐',
+            icon: '💤',
+            desc: 'Kamu memilih tidur dan melewatkan semua kejadian malam ini. Besoknya kamu cuma bisa denger cerita seru dari {friend1} dan {friend2} sambil gigit jari.'
+        },
+        'end_ketahuan': {
+            id: 'end_ketahuan',
+            title: 'Ketahuan Ustadz',
+            stars: '⭐⭐',
+            icon: '😂',
+            desc: 'Apes! Kalian tertangkap basah oleh Ustadz Piket. Besok bertiga disuruh bersih-bersih halaman asrama seharian.'
+        },
+        'end_terkunci': {
+            id: 'end_terkunci',
+            title: 'Gerbang Terkunci',
+            stars: '⭐⭐',
+            icon: '🚪',
+            desc: 'Gerbang utama digembok dan kalian menyerah. Gagal makan mie, tapi setidaknya aman kembali ke kamar.'
+        },
+        'end_failed': {
+            id: 'end_failed',
+            title: 'Brotherhood Failed',
+            stars: '⭐',
+            icon: '💔',
+            desc: 'Kamu meninggalkan teman demi menyelamatkan diri sendiri. Benar-benar bukan tindakan seorang sahabat sejati!'
+        },
+        'end_salah_kamar': {
+            id: 'end_salah_kamar',
+            title: 'Salah Kamar',
+            stars: '⭐⭐⭐',
+            icon: '🤣',
+            desc: 'Niatnya nyari tempat sembunyi, malah masuk ke kamar anak kelas 9 yang lagi rapat. Semua mata tertuju pada kalian!'
+        },
+        'end_success': {
+            id: 'end_success',
+            title: 'Mission Success',
+            stars: '⭐⭐⭐⭐',
+            icon: '🍜',
+            desc: 'Berhasil membeli mie Indomie rebus dan makan dengan khidmat. Misi selesai dengan cukup memuaskan!'
+        },
+        'end_partner': {
+            id: 'end_partner',
+            title: 'Partner in Crime',
+            stars: '⭐⭐⭐⭐',
+            icon: '👑',
+            desc: 'Kalian sangat kompak malam ini! Mulai dari bantu manjat sampai bayarin mie. Sahabat emang tiada duanya.'
+        },
+        'end_never_dies': {
+            id: 'end_never_dies',
+            title: 'Brotherhood Never Dies',
+            stars: '⭐⭐⭐⭐⭐',
+            icon: '🏆',
+            desc: 'Malam yang epik! Kalian berhasil keluar, makan, dan kembali ke kamar tanpa ketahuan dengan kekompakan 100%. Persahabatan kalian abadi!'
+        }
+    };
+
+    // Struktur Cerita
+    const epNodes = {
+        'start': {
+            title: 'Kamar Asrama - 22:30',
+            text: 'Jam menunjukkan pukul 22.30. Kamu ({player}) sedang berbaring santai. Tiba-tiba {friend1} menghampirimu dan berbisik pelan, "Bro... keluar bentar yuk."',
+            options: [
+                { text: 'Langsung ikut tanpa ba-bi-bu', targetId: 'scene_depan_kamar', fpChange: 10 },
+                { text: 'Tanya dulu mau ke mana malam-malam gini', targetId: 'scene_tanya_dulu', fpChange: 5 },
+                { text: 'Ah males ah, lanjut tidur aja', targetId: 'end_tidur', fpChange: -5 }
+            ]
+        },
+        'scene_tanya_dulu': {
+            title: 'Kamar Asrama - 22:32',
+            text: '{friend1} nyengir. "Rahasia, pokoknya ikut aja. Seru nih mumpung asrama lagi sepi." Kamu masih sedikit ragu.',
+            options: [
+                { text: 'Yaudah deh, ayo gas!', targetId: 'scene_depan_kamar', fpChange: 10 },
+                { text: 'Dingin bro, mending tidur nyenyak', targetId: 'end_tidur', fpChange: -5 }
+            ]
+        },
+        'scene_depan_kamar': {
+            title: 'Lorong Asrama - 22:35',
+            text: 'Kamu dan {friend1} mengendap-endap keluar. Di lorong ternyata {friend2} sudah nunggu sambil jongkok. "Ayo buruan beli mie sebelum gerbang beneran dikunci rapet!" kata {friend2} tak sabar.',
+            options: [
+                { text: 'Setuju dan lanjut jalan ngendap-ngendap', targetId: 'scene_lorong_utama', fpChange: 10 },
+                { text: 'Waduh gerbang? Nggak berani ah, ketahuan bisa disuruh bersihin wc', targetId: 'scene_tolak_takut', fpChange: -10 },
+                { text: 'Eh jangan keluar dong, makan sisa Taro aja di kamarku', targetId: 'scene_makan_taro', fpChange: 5 }
+            ]
+        },
+        'scene_tolak_takut': {
+            title: 'Lorong Asrama - 22:38',
+            text: '{friend1} dan {friend2} terlihat kecewa. "Yaelah bro, sekali-sekali. Masa cemen sih," ledek {friend2}. Kamu merasa agak bersalah.',
+            options: [
+                { text: 'Gengsi dong dibilang cemen, ayo berangkat!', targetId: 'scene_lorong_utama', fpChange: 10 },
+                { text: 'Tetep nggak mau, maaf ya guys', targetId: 'end_failed', fpChange: -15 }
+            ]
+        },
+        'scene_makan_taro': {
+            title: 'Kamar Asrama - 22:45',
+            text: 'Akhirnya kalian nggak jadi keluar. Kalian malah makan sisa camilan Taro beruntun sambil ngobrol pelan-pelan di kegelapan kamar. Gak dapet mie, tapi dapet kehangatan sahabat.',
+            options: [
+                { text: 'Tidur nyenyak', targetId: 'end_partner', fpChange: 10 }
+            ]
+        },
+        'scene_lorong_utama': {
+            title: 'Lorong Utama - 22:45',
+            text: 'Kalian bertiga jalan jongkok ngelewatin kamar-kamar. Tiba-tiba terdengar suara "Tuk.. Tuk.. Tuk.." khas langkah kaki Ustadz Piket dari arah depan!',
+            options: [
+                { text: 'Cepat sembunyi di balik tumpukan lemari sepatu', targetId: 'scene_sembunyi', fpChange: 5 },
+                { text: 'Panik! Lari sekencang-kencangnya balik ke kamar', targetId: 'scene_lari_panik', fpChange: -15 },
+                { text: 'Tetap berdiri tegak dan pura-pura ngelindur jalan sambil tidur', targetId: 'scene_ngelindur', fpChange: 0 }
+            ]
+        },
+        'scene_sembunyi': {
+            title: 'Balik Lemari Sepatu - 22:46',
+            text: 'Bau kaos kaki menyengat hidung kalian. Untungnya, Ustadz Piket lewat begitu saja sambil bawa senter. Kalian aman!',
+            options: [
+                { text: 'Lanjut ke gerbang', targetId: 'scene_gerbang', fpChange: 5 }
+            ]
+        },
+        'scene_lari_panik': {
+            title: 'Lorong Asrama - 22:46',
+            text: 'Kamu lari duluan ninggalin {friend1} dan {friend2}. Karena panik, {friend2} malah nabrak tong sampah! BRAKK! Suaranya nyaring banget.',
+            options: [
+                { text: 'Balik badan buat bantu mereka berdiri', targetId: 'scene_bantu_jatuh', fpChange: 15 },
+                { text: 'Bodo amat, nyelamatin diri sendiri dulu!', targetId: 'end_failed', fpChange: -20 }
+            ]
+        },
+        'scene_bantu_jatuh': {
+            title: 'Lorong Asrama - 22:47',
+            text: 'Kamu balik bantu {friend2}. Sayangnya, gara-gara suara tadi, Ustadz Piket udah ada di depan kalian dengan muka garang. Skak mat.',
+            options: [
+                { text: 'Pasrah', targetId: 'end_ketahuan', fpChange: 0 }
+            ]
+        },
+        'scene_ngelindur': {
+            title: 'Lorong Utama - 22:47',
+            text: 'Ustadz Piket langsung nyorot muka kalian bertiga. "Ngapain kalian malam-malam keluyuran?" suaranya berat dan menakutkan.',
+            options: [
+                { text: 'Jujur aja ustadz, laper mau beli mie di depan', targetId: 'end_ketahuan', fpChange: 5 },
+                { text: 'Eh astaghfirullah ustadz, kami sakit perut mau ke kamar mandi bareng', targetId: 'scene_alasan_wc', fpChange: 5 }
+            ]
+        },
+        'scene_alasan_wc': {
+            title: 'Jalan ke Masjid - 22:50',
+            text: 'Ustadz mengangguk. "Yaudah cepet, habis itu tidur." Kalian pura-pura jalan ke arah kamar mandi masjid, yang bikin rute ke gerbang jadi memutar jauh.',
+            options: [
+                { text: 'Terobos semak-semak belakang masjid', targetId: 'scene_gerbang', fpChange: 5 }
+            ]
+        },
+        'scene_gerbang': {
+            title: 'Gerbang Utama - 22:55',
+            text: 'Gerbang udah di depan mata. Tapi astaga... gembok gedenya udah dipasang. Ada celah lumayan di bawah pagar, atau bisa manjat tembok belakang warung.',
+            options: [
+                { text: 'Udah nyerah aja, kita balik kamar', targetId: 'end_terkunci', fpChange: -5 },
+                { text: 'Merayap kotor-kotoran di celah bawah pagar', targetId: 'scene_merayap', fpChange: 10 },
+                { text: 'Manjat tembok bareng-bareng', targetId: 'scene_manjat', fpChange: 10 }
+            ]
+        },
+        'scene_merayap': {
+            title: 'Bawah Pagar - 22:58',
+            text: '{friend2} berhasil lewat duluan. Pas giliran {friend1}, sarungnya nyangkut parah. Dia stuck di tengah-tengah!',
+            options: [
+                { text: 'Tarik dia sekuat tenaga dari luar', targetId: 'scene_warung', fpChange: 15 },
+                { text: 'Ketawain dulu puas-puas, baru bantuin ditarik', targetId: 'scene_warung', fpChange: 5 }
+            ]
+        },
+        'scene_manjat': {
+            title: 'Tembok Belakang - 22:58',
+            text: 'Kamu sukses naik ke atas tembok. Pas narik {friend1}, eh {friend2} yang di bawah malah kepleset masuk semak berduri.',
+            options: [
+                { text: 'Cepat turun dan narik {friend2} naik', targetId: 'scene_warung', fpChange: 15 },
+                { text: 'Tinggalin bentar ah, biarin dia nyari jalan sendiri', targetId: 'scene_warung', fpChange: -10 }
+            ]
+        },
+        'scene_warung': {
+            title: 'Warung Mang Koko - 23:05',
+            text: 'Akhirnya! Aroma Indomie rebus pakai telor dan saos tercium wangi banget. Mang Koko udah siap nyeduh.',
+            options: [
+                { text: 'Sok asik traktir mereka berdua', targetId: 'scene_balik', fpChange: 20 },
+                { text: 'Bayar masing-masing aja, uang tipis', targetId: 'scene_balik', fpChange: 5 }
+            ]
+        },
+        'scene_balik': {
+            title: 'Perjalanan Pulang - 23:30',
+            text: 'Kenyang! Perut penuh dan hati senang. Sekarang misinya adalah balik ke kasur tanpa ketahuan siapa pun.',
+            options: [
+                { text: 'Masuk lewat jalur utama (lorong asrama)', targetId: 'scene_masuk_utama', fpChange: -5 },
+                { text: 'Masuk lewat jendela belakang', targetId: 'scene_masuk_jendela', fpChange: 10 }
+            ]
+        },
+        'scene_masuk_utama': {
+            title: 'Lorong Asrama - 23:35',
+            text: 'Kalian ngendap-ngendap lagi. Tapi saking gelapnya, kalian salah masuk pintu dan... TERANG BENDERANG! Ternyata itu kamar anak pengurus (OSIS) yang lagi rapat evaluasi.',
+            options: [
+                { text: 'Mati kutu', targetId: 'end_salah_kamar', fpChange: 0 }
+            ]
+        },
+        'scene_masuk_jendela': {
+            title: 'Jendela Kamar - 23:35',
+            text: 'Satu per satu masuk lewat jendela dengan perlahan. Berhasil! Kalian akhirnya tepar di kasur masing-masing sambil tersenyum puas.',
+            options: [
+                { text: 'Akhirnya tidur...', targetId: 'check_final_ending', fpChange: 0 }
+            ]
+        }
+    };
+
+    const randomEvents = [
+        {
+            text: 'Seekor kucing tiba-tiba melompat dari atas lemari ke depan kalian! Suaranya cukup keras.',
+            options: [
+                { text: 'Tahan napas dan diam mematung', fpChange: 5 },
+                { text: 'Kaget dan tanpa sadar bilang "Ayam!"', fpChange: -5 }
+            ]
+        },
+        {
+            text: '{friend2} baru sadar sebelah sandalnya ketinggalan di depan kamar. Dia panik.',
+            options: [
+                { text: 'Kasih sandalmu buat dia, kamu nyeker', fpChange: 10 },
+                { text: 'Ketawain dan suruh dia nyeker', fpChange: -5 }
+            ]
+        },
+        {
+            text: 'Lampu lorong tiba-tiba mati total. {friend1} yang penakut langsung megang pundakmu keras banget.',
+            options: [
+                { text: 'Pegang balik tangannya biar dia tenang', fpChange: 10 },
+                { text: 'Tepisin tangannya buat iseng ngerjain', fpChange: -10 }
+            ]
+        }
+    ];
+
+    let epCurrentFP = 0;
+    let epSavedTargetId = null;
+    let epPlayerName = 'Qory';
+    let epFriend1 = 'Hadid';
+    let epFriend2 = 'Hafizh';
+
+    function parseEpText(text) {
+        if (!text) return '';
+        return text
+            .replace(/\{player\}/g, epPlayerName)
+            .replace(/\{friend1\}/g, epFriend1)
+            .replace(/\{friend2\}/g, epFriend2);
+    }
+
+    function showEpCharScreen() {
+        document.getElementById('ep-start-screen').style.display = 'none';
+        document.getElementById('ep-char-screen').style.display = 'block';
+    }
+
+    function selectEpCharacter(name) {
+        epPlayerName = name;
+        if (name === 'Qory') { epFriend1 = 'Hadid'; epFriend2 = 'Hafizh'; }
+        else if (name === 'Hadid') { epFriend1 = 'Qory'; epFriend2 = 'Hafizh'; }
+        else if (name === 'Hafizh') { epFriend1 = 'Qory'; epFriend2 = 'Hadid'; }
+        startEpGameplay();
+    }
+
+    function startEscapePesantren() {
+        showPage('escape-pesantren');
+        document.getElementById('ep-start-screen').style.display = 'block';
+        document.getElementById('ep-char-screen').style.display = 'none';
+        document.getElementById('ep-game-screen').style.display = 'none';
+        document.getElementById('ep-event-screen').style.display = 'none';
+        document.getElementById('ep-result-screen').style.display = 'none';
+        document.getElementById('ep-collection-screen').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function startEpGameplay() {
+        epCurrentFP = 0;
+        document.getElementById('ep-fp-score').innerText = epCurrentFP;
+        
+        document.getElementById('ep-start-screen').style.display = 'none';
+        document.getElementById('ep-char-screen').style.display = 'none';
+        document.getElementById('ep-result-screen').style.display = 'none';
+        document.getElementById('ep-game-screen').style.display = 'block';
+        
+        renderEpScene('start');
+    }
+
+    function renderEpScene(nodeId) {
+        if (nodeId === 'check_final_ending') {
+            if (epCurrentFP >= 50) {
+                nodeId = 'end_never_dies';
+            } else if (epCurrentFP >= 20) {
+                nodeId = 'end_partner';
+            } else {
+                nodeId = 'end_success';
+            }
+        }
+        
+        if (nodeId.startsWith('end_')) {
+            showEpResult(nodeId);
+            return;
+        }
+
+        const scene = epNodes[nodeId];
+        const sceneEl = document.getElementById('ep-scene-content');
+        
+        sceneEl.classList.remove('ep-scene-fade');
+        void sceneEl.offsetWidth; // reflow
+        sceneEl.classList.add('ep-scene-fade');
+
+        document.getElementById('ep-scene-title').innerText = scene.title;
+        document.getElementById('ep-story-text').innerText = parseEpText(scene.text);
+        
+        const optionsEl = document.getElementById('ep-options');
+        optionsEl.innerHTML = '';
+        
+        scene.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'ep-option-btn';
+            btn.innerText = parseEpText(opt.text);
+            btn.onclick = () => handleEpOption(opt.targetId, opt.fpChange);
+            optionsEl.appendChild(btn);
+        });
+    }
+
+    function handleEpOption(targetId, fpChange) {
+        epCurrentFP += fpChange;
+        document.getElementById('ep-fp-score').innerText = epCurrentFP;
+        
+        const sceneEl = document.getElementById('ep-scene-content');
+        sceneEl.classList.remove('ep-scene-fade');
+        sceneEl.classList.add('ep-scene-fade-out');
+        
+        setTimeout(() => {
+            sceneEl.classList.remove('ep-scene-fade-out');
+            
+            // 15% peluang Random Event
+            if (Math.random() < 0.15 && !targetId.startsWith('end_') && targetId !== 'start' && targetId !== 'check_final_ending') {
+                epSavedTargetId = targetId;
+                showEpEvent();
+            } else {
+                renderEpScene(targetId);
+            }
+        }, 300);
+    }
+
+    function showEpEvent() {
+        document.getElementById('ep-game-screen').style.display = 'none';
+        document.getElementById('ep-event-screen').style.display = 'block';
+        
+        const event = randomEvents[Math.floor(Math.random() * randomEvents.length)];
+        document.getElementById('ep-event-text').innerText = parseEpText(event.text);
+        
+        const optionsEl = document.getElementById('ep-event-options');
+        optionsEl.innerHTML = '';
+        
+        event.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'ep-option-btn';
+            btn.innerText = parseEpText(opt.text);
+            btn.onclick = () => {
+                epCurrentFP += opt.fpChange;
+                document.getElementById('ep-fp-score').innerText = epCurrentFP;
+                
+                document.getElementById('ep-event-screen').style.display = 'none';
+                document.getElementById('ep-game-screen').style.display = 'block';
+                renderEpScene(epSavedTargetId);
+            };
+            optionsEl.appendChild(btn);
+        });
+    }
+
+    function showEpResult(endingId) {
+        document.getElementById('ep-game-screen').style.display = 'none';
+        
+        const ending = epEndings[endingId];
+        document.getElementById('ep-ending-title').innerText = `${ending.icon} ${ending.title}`;
+        document.getElementById('ep-ending-stars').innerText = ending.stars;
+        document.getElementById('ep-ending-fp').innerText = epCurrentFP;
+        document.getElementById('ep-ending-desc').innerText = `"${parseEpText(ending.desc)}"`;
+        
+        saveEpEnding(endingId);
+        
+        document.getElementById('ep-result-screen').style.display = 'block';
+        
+        const resultEl = document.getElementById('ep-result-screen');
+        resultEl.style.animation = 'none';
+        void resultEl.offsetWidth;
+        resultEl.style.animation = 'fadeIn 0.5s ease';
+    }
+
+    function saveEpEnding(endingId) {
+        let saved = JSON.parse(localStorage.getItem('pesantren_endings') || '[]');
+        if (!saved.includes(endingId)) {
+            saved.push(endingId);
+            localStorage.setItem('pesantren_endings', JSON.stringify(saved));
+            document.getElementById('ep-ending-status').innerText = 'ENDING BARU DITEMUKAN!';
+            document.getElementById('ep-ending-status').style.background = '#e9c46a';
+        } else {
+            document.getElementById('ep-ending-status').innerText = 'SUDAH PERNAH DICAPAI';
+            document.getElementById('ep-ending-status').style.background = '#d0c9c0';
+        }
+    }
+
+    function showEpCollection() {
+        document.getElementById('ep-start-screen').style.display = 'none';
+        document.getElementById('ep-result-screen').style.display = 'none';
+        
+        const saved = JSON.parse(localStorage.getItem('pesantren_endings') || '[]');
+        const total = Object.keys(epEndings).length;
+        
+        document.getElementById('ep-collection-progress').innerText = `${saved.length}/${total} Ending Ditemukan`;
+        
+        const listEl = document.getElementById('ep-collection-list');
+        listEl.innerHTML = '';
+        
+        Object.values(epEndings).forEach(end => {
+            const isUnlocked = saved.includes(end.id);
+            
+            const item = document.createElement('div');
+            item.className = `ep-ending-item ${isUnlocked ? 'unlocked' : ''}`;
+            
+            item.innerHTML = `
+                <div class="ep-ending-icon">${isUnlocked ? end.icon : '🔒'}</div>
+                <div class="ep-ending-info">
+                    <h4>${isUnlocked ? end.title : 'Ending Terkunci'}</h4>
+                    <p>${isUnlocked ? parseEpText(end.desc) : 'Mainkan game dengan pilihan berbeda untuk membuka ending ini.'}</p>
+                </div>
+            `;
+            listEl.appendChild(item);
+        });
+        
+        document.getElementById('ep-collection-screen').style.display = 'block';
     }
 
     console.log("Website Sahabat Story siap!");
