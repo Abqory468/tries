@@ -1019,4 +1019,154 @@
                 playMusic().catch(() => {});
             }
         }, 1000);
-    } 
+    }
+
+    // ========== FRIENDSHIP STATS ANIMATION ==========
+    const statsSection = document.querySelector('.stats-section');
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    if (statsSection && statNumbers.length > 0) {
+        const animateValue = (obj, start, end, duration) => {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                
+                // Ease out cubic
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                
+                if (end === 'Infinity') {
+                    if (progress < 1) {
+                        obj.innerHTML = Math.floor(easeProgress * 999) + 1;
+                    } else {
+                        obj.innerHTML = '∞';
+                    }
+                } else {
+                    obj.innerHTML = Math.floor(easeProgress * (end - start) + start);
+                }
+                
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        };
+
+        const statsObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    
+                    setTimeout(() => {
+                        statNumbers.forEach((number, index) => {
+                            const targetStr = number.getAttribute('data-target');
+                            const target = targetStr === 'Infinity' ? 'Infinity' : parseInt(targetStr);
+                            
+                            setTimeout(() => {
+                                animateValue(number, 1, target, 1500);
+                            }, index * 120); // matching card stagger delay
+                        });
+                    }, 400); 
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        statsObserver.observe(statsSection);
+    }
+
+    // ========== STORY TIMELINE SLIDER ==========
+    const timelineSlider = document.getElementById('timelineSlider');
+    if (timelineSlider) {
+        const slides = timelineSlider.querySelectorAll('.timeline-slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const prevBtn = document.querySelector('.timeline-nav.prev-btn');
+        const nextBtn = document.querySelector('.timeline-nav.next-btn');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let animationID;
+
+        function goToSlide(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+            
+            slides.forEach((slide, i) => {
+                if (i === index) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            
+            indicators.forEach((indicator, i) => {
+                if (i === index) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+            
+            currentSlide = index;
+        }
+        
+        if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+        
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => goToSlide(index));
+        });
+        
+        // Touch/Mouse Swipe functionality
+        timelineSlider.addEventListener('mousedown', dragStart);
+        timelineSlider.addEventListener('touchstart', dragStart, {passive: true});
+        timelineSlider.addEventListener('mouseup', dragEnd);
+        timelineSlider.addEventListener('touchend', dragEnd);
+        timelineSlider.addEventListener('mouseleave', dragEnd);
+        timelineSlider.addEventListener('mousemove', drag);
+        timelineSlider.addEventListener('touchmove', drag, {passive: true});
+        
+        function getPositionX(event) {
+            return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+        }
+        
+        function dragStart(event) {
+            isDragging = true;
+            startPos = getPositionX(event);
+            animationID = requestAnimationFrame(animation);
+        }
+        
+        function drag(event) {
+            if (isDragging) {
+                const currentPosition = getPositionX(event);
+                currentTranslate = currentPosition - startPos;
+            }
+        }
+        
+        function dragEnd() {
+            isDragging = false;
+            cancelAnimationFrame(animationID);
+            
+            const swipeThreshold = 50;
+            if (currentTranslate < -swipeThreshold) {
+                goToSlide(currentSlide + 1);
+            } else if (currentTranslate > swipeThreshold) {
+                goToSlide(currentSlide - 1);
+            }
+            
+            currentTranslate = 0;
+        }
+        
+        function animation() {
+            if (isDragging) {
+                requestAnimationFrame(animation);
+            }
+        }
+    }
